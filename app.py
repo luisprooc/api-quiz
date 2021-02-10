@@ -1,5 +1,6 @@
 from flask import Flask,jsonify
 from flask_sqlalchemy import SQLAlchemy
+from random import randint
 
 app = Flask(__name__)
 
@@ -16,20 +17,38 @@ class Quiz(db.Model):
     incorrect2 = db.Column(db.String(70),unique=False, nullable=False)
 
 
-@app.route('/quiz')
-def quiz():
-    return 'Hello World!'
-
-@app.route('/new',methods=["POST"])
-def new():
+@app.route('/quiz/sc',methods=["GET"])
+def quiz_sc():
     try:
-        new = Quiz(question="Se refiere al acto de transferir un archivo o fichero desde un servidor a nuestro computador:",category="Tecnologia",correct_answer="Dowload.",incorrect="Upload.",incorrect2="Transfer.")
-        db.session.add(new)
-        db.session.commit()
-        return 'Question ADDED'
-
+        science = Quiz.query.filter_by(category = 'Ciencia').all()
+        num = randint(1,len(science))
+        res = {
+            "Id":science[num].id,"Category":science[num].category,
+            "Correct":science[num].correct_answer,"Incorrect":science[num].incorrect,
+            "Incorrect2":science[num].incorrect2
+            }
+        return jsonify(res)
+    
     except:
-        return "ERROR"
+        return "Error in GET REQUEST"
+
+@app.route('/quiz/tec',methods=["GET"])
+def quiz_tec():
+    try:
+        tec = Quiz.query.filter_by(category = 'Tecnologia').all()
+        num = randint(1,len(tec))
+        res = {
+            "Id":tec[num].id,"Category":tec[num].category,
+            "Correct":tec[num].correct_answer,"Incorrect":tec[num].incorrect,
+            "Incorrect2":tec[num].incorrect2
+            }
+        return jsonify(res)
+    
+    except:
+        return "Error in GET REQUEST"
+    
+
+
 
 if __name__ == '__main__':
     app.run(debug=True,port=5000)
