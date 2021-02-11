@@ -17,31 +17,50 @@ class Quiz(db.Model):
     incorrect2 = db.Column(db.String(70),unique=False, nullable=False)
 
 
-@app.route('/quiz/sc',methods=["GET"])
-def quiz_sc():
+# Filter by category
+@app.route('/quiz/<ct>',methods=["GET"])
+def quiz_sc(ct):
+
     try:
-        science = Quiz.query.filter_by(category = 'Ciencia').all()
-        num = randint(1,len(science))
+        # Get all question by category
+
+        req = Quiz.query.filter_by(category = "{0}".format(ct)).all()
+        num = randint(0,len(req))
+
+        # When num is more big that len array, less 1
+        if num == 15:
+            num-=1
+        
         res = {
-            "Id":science[num].id,"Category":science[num].category,
-            "Correct":science[num].correct_answer,"Incorrect":science[num].incorrect,
-            "Incorrect2":science[num].incorrect2
+            "Id":req[num].id,"Category":req[num].category,
+            "Correct":req[num].correct_answer,"Incorrect":req[num].incorrect,
+            "Incorrect2":req[num].incorrect2,"Question":req[num].question
             }
         return jsonify(res)
     
     except:
-        return "Error in GET REQUEST"
+        return "ERROR IN GET REQUEST, CATEGORY NOT FOUND"
 
-@app.route('/quiz/tec',methods=["GET"])
-def quiz_tec():
+
+# Random category
+@app.route('/quiz',methods=["GET"])
+def quiz_any():
     try:
-        tec = Quiz.query.filter_by(category = 'Tecnologia').all()
-        num = randint(1,len(tec))
+        # GET all questions
+
+        any = Quiz.query.all()
+        num = randint(0,len(any))
+
+        # When num is more big that len array, less 1
+        if num == 30:
+            num-=1
+        
         res = {
-            "Id":tec[num].id,"Category":tec[num].category,
-            "Correct":tec[num].correct_answer,"Incorrect":tec[num].incorrect,
-            "Incorrect2":tec[num].incorrect2
+            "Id":any[num].id,"Category":any[num].category,
+            "Correct":any[num].correct_answer,"Incorrect":any[num].incorrect,
+            "Incorrect2":any[num].incorrect2,"Question":any[num].question
             }
+        
         return jsonify(res)
     
     except:
