@@ -36,11 +36,7 @@ def quiz_sc(ct):
         # Get all question by category
 
         req = Quiz.query.filter_by(category = "{0}".format(ct)).all()
-        num = randint(0,len(req))
-
-        # When num is more big that len array, less 1
-        if num == 15:
-            num-=1
+        num = randint(0,len(req)-1)
         
         res = {
             "Id":req[num].id,"Category":req[num].category,
@@ -60,11 +56,7 @@ def quiz_any():
         # GET all questions
 
         any = Quiz.query.all()
-        num = randint(0,len(any))
-
-        # When num is more big that len array, less 1
-        if num == 30:
-            num-=1
+        num = randint(0,len(any)-1)
         
         res = {
             "Id":any[num].id,"Category":any[num].category,
