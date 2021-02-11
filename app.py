@@ -1,8 +1,19 @@
 from flask import Flask,jsonify
 from flask_sqlalchemy import SQLAlchemy
 from random import randint
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+
+# CORS
+
+CORS(app)
+cors = CORS(app, resources={
+    r"/*" :{
+        "origin": "*"
+    }
+})
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///DB/quiz.db'
 db = SQLAlchemy(app)
