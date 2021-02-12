@@ -40,8 +40,8 @@ def quiz_sc(ct):
         
         res = {
             "Id":req[num].id,"Category":req[num].category,
-            "answers": [{"Correct":req[num].correct_answer},{"Incorrect":req[num].incorrect},
-            {"Incorrect2":req[num].incorrect2}],"Question":req[num].question
+            "Correct":req[num].correct_answer,"Incorrect":req[num].incorrect,
+            "Incorrect2":req[num].incorrect2,"Question":req[num].question
             }
         return jsonify(res)
     
@@ -60,9 +60,9 @@ def quiz_any():
         
         res = {
             "Id":any[num].id,"Category":any[num].category,
-            "answer":[ {"Correct":any[num].correct_answer},{"Incorrect":any[num].incorrect},
-            {"Incorrect2":any[num].incorrect2} ],"Question":any[num].question}
-        
+            "Correct":any[num].correct_answer,"Incorrect":any[num].incorrect,
+            "Incorrect2":any[num].incorrect2,"Question":any[num].question
+            }
         return jsonify(res)
     
     except:
