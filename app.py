@@ -1,3 +1,4 @@
+import re
 from flask import Flask,jsonify
 from flask_sqlalchemy import SQLAlchemy
 from random import randint
@@ -39,10 +40,13 @@ def quiz_sc(ct):
         num = randint(0,len(req)-1)
         
         res = {
-            "Id":req[num].id,"Category":req[num].category,
-            "Correct":req[num].correct_answer,"Incorrect":req[num].incorrect,
-            "Incorrect2":req[num].incorrect2,"Question":req[num].question
-            }
+            "id":req[num].id,"category":req[num].category,
+            "answers":[
+                { "optId":randint(0,100),"opt":req[num].correct_answer },{ "optId":randint(0,100),"opt":req[num].incorrect },
+                { "optId":randint(0,100),"opt":req[num].incorrect2 }
+            ],"question":req[num].question,"correct":req[num].correct_answer }
+            
+
         return jsonify(res)
     
     except:
@@ -55,14 +59,16 @@ def quiz_any():
     try:
         # GET all questions
 
-        any = Quiz.query.all()
-        num = randint(0,len(any)-1)
+        req = Quiz.query.all()
+        num = randint(0,len(req)-1)
         
         res = {
-            "Id":any[num].id,"Category":any[num].category,
-            "Correct":any[num].correct_answer,"Incorrect":any[num].incorrect,
-            "Incorrect2":any[num].incorrect2,"Question":any[num].question
-            }
+            "id":req[num].id,"category":req[num].category,
+            "answers":[
+                { "optId":randint(0,100),"opt":req[num].correct_answer },{ "optId":randint(0,100),"opt":req[num].incorrect },
+                { "optId":randint(0,100),"opt":req[num].incorrect2 }
+            ],"question":req[num].question,"correct":req[num].correct_answer }
+
         return jsonify(res)
     
     except:
